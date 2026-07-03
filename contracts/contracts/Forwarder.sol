@@ -36,6 +36,8 @@ contract Forwarder is EIP712 {
 
     function execute(ForwardRequest calldata req, bytes calldata signature) public payable returns (bool, bytes memory) {
         require(verify(req, signature), "Forwarder: signature does not match request");
+        // Ensure forwarder doesn't drain its own native token balance
+        require(req.value == 0, "Forwarder: value transfers not supported");
         _nonces[req.from] = req.nonce + 1;
 
         // EIP-2771: append the from address to the calldata

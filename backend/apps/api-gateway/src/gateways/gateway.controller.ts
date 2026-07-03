@@ -23,8 +23,8 @@ export class GatewayController {
 
   @Get('relay/nonce/:wallet')
   async getRelayNonce(@Param('wallet') wallet: string) {
-    // Return a mock nonce (0) to simplify local development/testing of EIP-2771
-    return { nonce: 0 };
+    const nonce = await this.relayerService.getNonce(wallet);
+    return { nonce };
   }
 
   // --- SIWE Auth Endpoints ---

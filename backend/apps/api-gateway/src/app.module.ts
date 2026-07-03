@@ -6,6 +6,7 @@ import { FreightController } from './gateways/freight.controller';
 import { BlockchainService } from './services/blockchain.service';
 import { RelayerService } from './services/relayer.service';
 import { DataService } from './services/data.service';
+import { PrismaService } from './services/prisma.service';
 
 @Module({
   imports: [],
@@ -15,6 +16,6 @@ import { DataService } from './services/data.service';
     RetailController,
     FreightController,
   ],
-  providers: [BlockchainService, RelayerService, DataService],
+  providers: [BlockchainService, RelayerService, DataService, PrismaService],
 })
 export class AppModule {}

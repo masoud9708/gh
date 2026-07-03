@@ -5,6 +5,34 @@
   ▲ Next.js 14.2.35
 
    Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+Module not found: Can't resolve '@react-native-async-storage/async-storage' in '/app/node_modules/@metamask/sdk/dist/browser/es'
+
+Import trace for requested module:
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+../node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/utils/defaultConfig.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/index.js
+../node_modules/@web3modal/wagmi/dist/esm/exports/react/index.js
+./components/auth/Web3ModalProvider.tsx
+
+ ⚠ Compiled with warnings
+
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+Module not found: Can't resolve '@react-native-async-storage/async-storage' in '/app/node_modules/@metamask/sdk/dist/browser/es'
+
+Import trace for requested module:
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+../node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/utils/defaultConfig.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/index.js
+../node_modules/@web3modal/wagmi/dist/esm/exports/react/index.js
+./components/auth/Web3ModalProvider.tsx
+
  ✓ Compiled successfully
    Linting and checking validity of types ...
    Collecting page data ...
@@ -17,17 +45,17 @@
    Collecting build traces ...
 
 Route (app)                              Size     First Load JS
-┌ ○ /                                    155 B          87.4 kB
-├ ○ /_not-found                          873 B          88.1 kB
-├ ○ /admin                               155 B          87.4 kB
-├ ○ /buyer                               155 B          87.4 kB
-├ ○ /driver                              155 B          87.4 kB
-├ ○ /seller                              155 B          87.4 kB
-└ ○ /shipper                             155 B          87.4 kB
-+ First Load JS shared by all            87.2 kB
-  ├ chunks/364-18bce32d141212a9.js       31.7 kB
-  ├ chunks/618f8807-294cea9d40b23b0c.js  53.6 kB
-  └ other shared chunks (total)          1.86 kB
+┌ ○ /                                    161 B          89.1 kB
+├ ○ /_not-found                          880 B          89.9 kB
+├ ○ /admin                               161 B          89.1 kB
+├ ○ /buyer                               161 B          89.1 kB
+├ ○ /driver                              161 B          89.1 kB
+├ ○ /seller                              161 B          89.1 kB
+└ ○ /shipper                             161 B          89.1 kB
++ First Load JS shared by all            89 kB
+  ├ chunks/2364-20d1686a3357720a.js      31.9 kB
+  ├ chunks/618f8807-675a5e45fdf02202.js  53.6 kB
+  └ other shared chunks (total)          3.44 kB
 
 
 ○  (Static)  prerendered as static content

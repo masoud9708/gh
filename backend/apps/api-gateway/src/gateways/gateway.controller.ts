@@ -1,9 +1,14 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UnauthorizedException } from '@nestjs/common';
 import { RelayerService } from '../services/relayer.service';
+import { DataService } from '../services/data.service';
+import { SiweMessage, generateNonce } from 'siwe';
 
 @Controller('api/v1')
 export class GatewayController {
-  constructor(private readonly relayerService: RelayerService) {}
+  constructor(
+    private readonly relayerService: RelayerService,
+    private readonly dataService: DataService
+  ) {}
 
   @Get('health')
   healthCheck() {
@@ -22,33 +27,58 @@ export class GatewayController {
     return { nonce: 0 };
   }
 
-  // --- SIWE Auth Mock Endpoints ---
+  // --- SIWE Auth Endpoints ---
   @Post('auth/nonce')
   async getAuthNonce(@Body() body: { address: string }) {
-    return { nonce: 'mock_nonce_1234567890', message: `Sign this message to login: mock_nonce_1234567890` };
+    if (!body.address) {
+      throw new UnauthorizedException('Address is required');
+    }
+    const nonce = generateNonce();
+    this.dataService.setNonce(body.address, nonce);
+    return { nonce };
   }
 
   @Post('auth/verify')
-  async verifyAuth(@Body() body: { walletAddress: string, signature: string, message: string, role: string }) {
-    // In production, verify the SIWE signature. For now, mock success.
-    return {
-      token: 'mock_jwt_token',
-      user: {
-        walletAddress: body.walletAddress,
-        role: body.role,
-        roles: [body.role],
-        reputationScore: 50,
-        reputationLevel: 'TRUSTED'
+  async verifyAuth(@Body() body: { message: any, signature: string, role: string }) {
+    try {
+      const siweMessage = new SiweMessage(body.message);
+
+      const expectedNonce = this.dataService.getNonce(siweMessage.address);
+      if (!expectedNonce || expectedNonce !== siweMessage.nonce) {
+         throw new UnauthorizedException('Invalid nonce');
       }
-    };
+
+      // Verify signature
+      const { data } = await siweMessage.verify({ signature: body.signature });
+
+      // Invalidate nonce
+      this.dataService.removeNonce(siweMessage.address);
+
+      // Upsert user
+      let user = this.dataService.getUser(data.address);
+      if (!user) {
+        user = this.dataService.createUser(data.address, body.role);
+      } else if (!user.roles.includes(body.role)) {
+        user.roles.push(body.role);
+        user.role = body.role; // Set as active role
+      }
+
+      // Generate a mock JWT token for the architecture design
+      const mockJwt = Buffer.from(JSON.stringify({ address: user.walletAddress, role: user.role })).toString('base64');
+
+      return {
+        token: mockJwt,
+        user
+      };
+    } catch (e) {
+      throw new UnauthorizedException('Invalid signature');
+    }
   }
 
-  @Get('auth/profile')
-  async getProfile() {
-    return {
-      walletAddress: '0xmockaddress',
-      role: 'shipper',
-      roles: ['shipper']
-    };
+  @Get('auth/profile/:wallet')
+  async getProfile(@Param('wallet') wallet: string) {
+    const user = this.dataService.getUser(wallet);
+    if (!user) throw new UnauthorizedException('User not found');
+    return user;
   }
 }

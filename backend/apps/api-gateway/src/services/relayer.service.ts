@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { BlockchainService } from './blockchain.service';
 import { ethers } from 'ethers';
 
@@ -10,7 +10,9 @@ export class RelayerService {
 
   async relayTransaction(req: any, signature: string) {
     this.logger.log(`Relaying transaction for ${req.from}`);
-    // Replace with EIP-2771 forwarder logic
-    return { txHash: '0xmockTxHash' };
+
+    // For now, throw an error so the frontend fallback (direct transaction) is triggered.
+    // In production, this would execute Forwarder.execute(req, sig).
+    throw new HttpException('Relayer not fully implemented yet, triggering fallback', HttpStatus.NOT_IMPLEMENTED);
   }
 }

@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Body, Param, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UnauthorizedException, UseGuards, Request } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { RelayerService } from '../services/relayer.service';
 import { DataService } from '../services/data.service';
 import { SiweMessage, generateNonce } from 'siwe';
+import { AuthGuard } from '../services/auth.guard';
 
 @Controller('api/v1')
 export class GatewayController {
   constructor(
     private readonly relayerService: RelayerService,
-    private readonly dataService: DataService
+    private readonly dataService: DataService,
+    private readonly jwtService: JwtService
   ) {}
 
   @Get('health')
@@ -63,11 +66,12 @@ export class GatewayController {
         user.role = body.role; // Set as active role
       }
 
-      // Generate a mock JWT token for the architecture design
-      const mockJwt = Buffer.from(JSON.stringify({ address: user.walletAddress, role: user.role })).toString('base64');
+      // Generate real JWT token
+      const payload = { sub: user.walletAddress, walletAddress: user.walletAddress, role: user.role };
+      const token = await this.jwtService.signAsync(payload);
 
       return {
-        token: mockJwt,
+        token,
         user
       };
     } catch (e) {
@@ -75,9 +79,10 @@ export class GatewayController {
     }
   }
 
-  @Get('auth/profile/:wallet')
-  async getProfile(@Param('wallet') wallet: string) {
-    const user = this.dataService.getUser(wallet);
+  @UseGuards(AuthGuard)
+  @Get('auth/profile')
+  async getProfile(@Request() req: any) {
+    const user = this.dataService.getUser(req.user.walletAddress);
     if (!user) throw new UnauthorizedException('User not found');
     return user;
   }

@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  walletAddress    String   @id @map("wallet_address")
+  role             String?
+  roles            String[]
+  name             String?
+  email            String?
+  reputationScore  Int      @default(50)
+  reputationLevel  String   @default("NEWBIE")
+  totalOrders      Int      @default(0)
+  completedOrders  Int      @default(0)
+  failedOrders     Int      @default(0)
+  cancelledOrders  Int      @default(0)
+  disputesRaised   Int      @default(0)
+  openDisputes     Int      @default(0)
+  violations       Int      @default(0)
+  repeatedDelays   Int      @default(0)
+  driverLevel      Int      @default(1)
+  sellerRating     Float?
+  totalEarningsWei String   @default("0")
+  createdAt        DateTime @default(now())
+}
+
+model Contract {
+  id              String   @id
+  contract_type   String   // "FREIGHT" | "RETAIL"
+
+  // FREIGHT fields
+  cargoId         String?
+  shipperWallet   String?
+  driverWallet    String?
+  cargoValue      Float?
+  amountMatic     Float?
+  chainContractId Int?
+
+  // RETAIL fields
+  retailOrderId   String?
+  buyerWallet     String?
+  sellerWallet    String?
+
+  // Common fields
+  pickupCode      String
+  deliveryCode    String
+  state           String
+  createdAt       DateTime @default(now())
+}

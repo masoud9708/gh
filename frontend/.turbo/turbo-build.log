@@ -1,0 +1,61 @@
+
+> frontend@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+Module not found: Can't resolve '@react-native-async-storage/async-storage' in '/app/node_modules/@metamask/sdk/dist/browser/es'
+
+Import trace for requested module:
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+../node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/utils/defaultConfig.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/index.js
+../node_modules/@web3modal/wagmi/dist/esm/exports/react/index.js
+./components/auth/Web3ModalProvider.tsx
+
+ ⚠ Compiled with warnings
+
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+Module not found: Can't resolve '@react-native-async-storage/async-storage' in '/app/node_modules/@metamask/sdk/dist/browser/es'
+
+Import trace for requested module:
+../node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js
+../node_modules/@wagmi/connectors/dist/esm/metaMask.js
+../node_modules/@wagmi/connectors/dist/esm/exports/index.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/utils/defaultConfig.js
+../node_modules/@web3modal/base/dist/esm/adapters/evm/wagmi/index.js
+../node_modules/@web3modal/wagmi/dist/esm/exports/react/index.js
+./components/auth/Web3ModalProvider.tsx
+
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/9) ...
+   Generating static pages (2/9)
+   Generating static pages (4/9)
+   Generating static pages (6/9)
+ ✓ Generating static pages (9/9)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    156 B          89.2 kB
+├ ○ /_not-found                          880 B          89.9 kB
+├ ○ /admin                               156 B          89.2 kB
+├ ○ /buyer                               156 B          89.2 kB
+├ ○ /driver                              1 kB            165 kB
+├ ○ /seller                              156 B          89.2 kB
+└ ○ /shipper                             4.67 kB         169 kB
++ First Load JS shared by all            89 kB
+  ├ chunks/2364-7de6c686cd486cca.js      31.9 kB
+  ├ chunks/618f8807-ca8a63a5d9cb5fb4.js  53.6 kB
+  └ other shared chunks (total)          3.46 kB
+
+
+○  (Static)  prerendered as static content
